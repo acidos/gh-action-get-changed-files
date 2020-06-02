@@ -3,9 +3,6 @@ const fs                  = require('fs');
 const { context, GitHub } = require('@actions/github');
 const core                = require('@actions/core');
 
-console.log('abracadabra:');
-console.log(JSON.stringify(context, null, 2));
-
 const commits = context.payload.commits.filter(c => c.distinct);
 const repo    = context.payload.repository;
 const org     = repo.organization;
@@ -58,12 +55,19 @@ async function processCommit(commit) {
 
 
 Promise.all(commits.map(processCommit)).then(() => {
-	process.stdout.write(`::debug::${JSON.stringify(FILES, 4)}`);
+	/*process.stdout.write(`::debug::${JSON.stringify(FILES, 4)}`);
 	process.stdout.write(`::set-output name=all::${JSON.stringify(FILES, 4)}`);
 	process.stdout.write(`::set-output name=added::${JSON.stringify(FILES_ADDED, 4)}`);
 	process.stdout.write(`::set-output name=deleted::${JSON.stringify(FILES_DELETED, 4)}`);
 	process.stdout.write(`::set-output name=modified::${JSON.stringify(FILES_MODIFIED, 4)}`);
-	process.stdout.write(`::set-output name=renamed::${JSON.stringify(FILES_RENAMED, 4)}`);
+	process.stdout.write(`::set-output name=renamed::${JSON.stringify(FILES_RENAMED, 4)}`);*/
+
+	console.log(`::debug::${JSON.stringify(FILES, 4)}`);
+	console.log(`::set-output name=all::${JSON.stringify(FILES, 4)}`);
+	console.log(`::set-output name=added::${JSON.stringify(FILES_ADDED, 4)}`);
+	console.log(`::set-output name=deleted::${JSON.stringify(FILES_DELETED, 4)}`);
+	console.log(`::set-output name=modified::${JSON.stringify(FILES_MODIFIED, 4)}`);
+	console.log(`::set-output name=renamed::${JSON.stringify(FILES_RENAMED, 4)}`);
 
 	fs.writeFileSync(`${process.env.HOME}/files.json`, JSON.stringify(FILES), 'utf-8');
 	fs.writeFileSync(`${process.env.HOME}/files_modified.json`, JSON.stringify(FILES_MODIFIED), 'utf-8');
