@@ -3,6 +3,9 @@ const fs                  = require('fs');
 const { context, GitHub } = require('@actions/github');
 const core                = require('@actions/core');
 
+console.log('abracadabra:');
+console.log(JSON.stringify(context, null, 2));
+
 const commits = context.payload.commits.filter(c => c.distinct);
 const repo    = context.payload.repository;
 const org     = repo.organization;
