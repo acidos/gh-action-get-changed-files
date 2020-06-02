@@ -19,7 +19,13 @@ module.exports =
 /******/ 		};
 /******/
 /******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 		var threw = true;
+/******/ 		try {
+/******/ 			modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 			threw = false;
+/******/ 		} finally {
+/******/ 			if(threw) delete installedModules[moduleId];
+/******/ 		}
 /******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.l = true;
@@ -34,7 +40,7 @@ module.exports =
 /******/ 	// the startup function
 /******/ 	function startup() {
 /******/ 		// Load entry module and return exports
-/******/ 		return __webpack_require__(992);
+/******/ 		return __webpack_require__(159);
 /******/ 	};
 /******/
 /******/ 	// run startup
@@ -43,36 +49,24 @@ module.exports =
 /************************************************************************/
 /******/ ({
 
-/***/ 266:
-/***/ (function() {
-
-eval("require")("@actions/core");
-
-
-/***/ }),
-
-/***/ 374:
-/***/ (function() {
-
-eval("require")("@actions/github");
-
-
-/***/ }),
-
-/***/ 747:
+/***/ 6:
 /***/ (function(module) {
 
-module.exports = require("fs");
+module.exports = eval("require")("@actions/core");
+
 
 /***/ }),
 
-/***/ 992:
+/***/ 159:
 /***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
 
 // External Dependencies
 const fs                  = __webpack_require__(747);
-const { context, GitHub } = __webpack_require__(374);
-const core                = __webpack_require__(266);
+const { context, GitHub } = __webpack_require__(304);
+const core                = __webpack_require__(6);
+
+console.log('abracadabra:');
+console.log(JSON.stringify(context, null, 2));
 
 const commits = context.payload.commits.filter(c => c.distinct);
 const repo    = context.payload.repository;
@@ -142,6 +136,21 @@ Promise.all(commits.map(processCommit)).then(() => {
 	process.exit(0);
 });
 
+
+/***/ }),
+
+/***/ 304:
+/***/ (function(module) {
+
+module.exports = eval("require")("@actions/github");
+
+
+/***/ }),
+
+/***/ 747:
+/***/ (function(module) {
+
+module.exports = require("fs");
 
 /***/ })
 
